@@ -28,13 +28,12 @@ memory_file = StringIO()
 
 
 class Card:
-    '''
-    creates cards and save them into the dictionary of all cards (term: [definition, statistic]),
+    """" Create cards and save them into the dictionary of all cards (term: [definition, statistic]),
     remove cards from the dictionary of all cards,
     increase statistics when a user enters a wrong definition,
     get the hardest card - the card with the maximum number of mistakes,
     reset statistics for all cards
-    '''
+    """
 
     # dictionary of all cards
     all_cards_dict = {}
@@ -48,18 +47,20 @@ class Card:
         Card.all_cards_dict[self.term] = [self.definition, self.stat]
 
     def remove_card(c):
-        ''' remove card c from the dictionary of all cards '''
+        """ Remove card c from the dictionary of all cards 
+        """
         Card.all_cards_dict.pop(c, f'Can\'t remove "{c}": there is no such card.\n')
 
     def increase_stat(c):
-        ''' increase statistic of card c in the dictionary of all cards
-         when the user's answer is wrong (in test_all_cards() function) '''
+        """ Icrease statistic of card c in the dictionary of all cards
+        when the user's answer is wrong (in test_all_cards() function)
+        """
         if c in Card.all_cards_dict.keys():
             Card.all_cards_dict[c][1] = int(Card.all_cards_dict[c][1])
             Card.all_cards_dict[c][1] += 1
 
     def get_hardest_card():
-        ''' get the cards with the maximum number of wrong answers '''
+        """ Get the cards with the maximum number of wrong answers """
 
         # create a list with the statistics of all cards in the dictionary
         stats_values = [int(v[1]) for k, v in Card.all_cards_dict.items()]
@@ -76,7 +77,7 @@ class Card:
         main()
 
     def reset_stats():
-        ''' resets statistics for all the cards in the dictionary '''
+       """ Reset statistics for all the cards in the dictionary """
         for k, v in Card.all_cards_dict.items():
             v[1] = 0
         print("Card statistics have been reset.")
@@ -84,14 +85,16 @@ class Card:
 
 
 def display_definition(t):
-    ''' displays the definition of a card, parameter = the name (term) of the card '''
+    """ Display the definition of a card, parameter = the name (term) of the card 
+    """
     if t in Card.all_cards_dict.keys():
         print(Card.all_cards_dict[t][0])
 
 
 def validate_term():
-    ''' checks if a term already exists in the dictionary of all cards
-     and return the term if it does not exists in the dictionary'''
+    """ Check if a term already exists in the dictionary of all cards
+    and return the term if it does not exists in the dictionary
+    """
     t = input("The card:\n")
     while t in Card.all_cards_dict.keys():
         print(f'The card "{t}" already exists.\n')  # Try again:
@@ -100,7 +103,8 @@ def validate_term():
 
 
 def validate_definition():
-    ''' checks if a definition exists for another term in the dictionary '''
+    """ Check if a definition exists for another term in the dictionary 
+    """
     d = input("The definition of the card:\n")
     definitions = [v[0] for k, v in Card.all_cards_dict.items()]
     while d in definitions:
@@ -110,13 +114,15 @@ def validate_definition():
 
 
 def create_card(t, d, s):
-    ''' creates a card with the validated term, definition and statistic = 0 by default
-    using the constructor of the Card class '''
+    """ Create a card with the validated term, definition and statistic = 0 by default
+    using the constructor of the Card class
+    """
     Card(t, d, s)
 
 
 def test_all_cards_in_dict():
-    ''' tests all cards in the dictionary of all cards '''
+    """ Test all cards in the dictionary of all cards
+    """
 
     # n = len(Card.all_cards)  # stage 3 / 4
     number_of_tests = int(input(f"How many times to ask?"))
@@ -149,7 +155,8 @@ def test_all_cards_in_dict():
 
 
 def remove_card():
-    ''' removes card from the dictionary of all cards using the .remove_card() method of the Card class '''
+    """ Remove card from the dictionary of all cards using the .remove_card() method of the Card class
+    """
     c = input("Which card?\n")
     if c in Card.all_cards_dict.keys():
         Card.remove_card(c)
@@ -160,8 +167,9 @@ def remove_card():
 
 
 def export_cards():
-    ''' exports the cards in the dictionary (term definition statistic)
-        to the user input file '''
+    """ Export the cards in the dictionary (term definition statistic)
+        to the user input file
+    """
     file_name = input("File name:\n")
     with open(f"{file_name}", "w+") as f:
         for k, v in Card.all_cards_dict.items():
@@ -171,8 +179,9 @@ def export_cards():
 
 
 def import_cards():
-    ''' imports the cards from the user input file (each card on one line: term definition statistic)
-        to the dictionary of all cards by creating a new card, using the Card class '''
+    """ Import the cards from the user input file (each card on one line: term definition statistic)
+        to the dictionary of all cards by creating a new card, using the Card class
+    """
     file_name = input("File name:\n")
     if not os.path.exists(file_name):
         print("File not found.\n")
@@ -187,7 +196,7 @@ def import_cards():
 
 
 def display_all_cards():
-    ''' display all cards in the dictionary (in case it will be necessary) '''
+    """ Display all cards in the dictionary (in case it will be necessary) """
     for k, v in Card.all_cards_dict.items():
         print(k + " : " + v)
     print("\n")
@@ -195,7 +204,8 @@ def display_all_cards():
 
 
 def save_log():
-    ''' saves the log (questions and user answers) from the memory file to the user input file'''
+    """ Save the log (questions and user answers) from the memory file to the user input file
+    """
     file_name = input("File name:\n")
     with open(file_name, "w+") as log:
         for line in memory_file:
@@ -204,17 +214,18 @@ def save_log():
 
 
 def display_hardest_card():
-    ''' display the card with maximum number of mistakes in statistics using the
-     .get_hardest_card() method of the Card class '''
+    """ Display the card with maximum number of mistakes in statistics using the
+     .get_hardest_card() method of the Card class """
     Card.get_hardest_card()
 
 
 def import_arg(file_name):
-    ''' when provided with command-line arguments,
+    """ when provided with command-line arguments,
         if --import_from=FILE is passed, read the initial card set from the external file
         and print "n cards have been loaded" as the first line of the output...
         ... if such an argument is not provided, the initial should initially be empty ...
-        ... and no message about card loading should be output '''
+        ... and no message about card loading should be output
+    """
     if not os.path.exists(file_name):
         print("File not found.\n")
     else:
@@ -227,9 +238,10 @@ def import_arg(file_name):
 
 
 def export_arg(file_name):
-    ''' when provided command-line arguments,
+    """ When provided command-line arguments,
         if --export_to=FILE is passed, write all cards that are in program memory into this file
-        after the user has entered exit '''
+        after the user has entered exit
+    """
     with open(f"{file_name}", "w+") as f:
         for k, v in Card.all_cards_dict.items():
             f.write(f"{k} {v[0]} {v[1]}\n")
@@ -237,7 +249,8 @@ def export_arg(file_name):
 
 
 def main():
-    ''' main function: output the menu and execute actions according with the user choice '''
+    """ Main function: output the menu and execute actions according with the user choice
+    """
 
     # stage 6
     choice = input("Input the action (add, remove, import, export, \
